@@ -45,3 +45,22 @@ make -j $(nproc)
 $INST && sudo make install/strip
 echo "to uninstall (not very well tested, please keep that in mind):"
 echo "   sudo make uninstall"
+
+[Unit]
+Description=Hyperion ambient light systemd service
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/hyperiond
+WorkingDirectory=/usr/local/share/hyperion/bin
+User=pi
+TimeoutStopSec=5
+KillMode=mixed
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target
+sudo systemctl daemon-reload
+sudo systemctl enable hyperion.service
+sudo systemctl start hyperion.service
